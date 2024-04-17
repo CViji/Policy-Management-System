@@ -19,10 +19,10 @@ system will store the details in the database.
 mechanism to find the policies. This will access the database by getting the details
 based on user search criteria
 
-Rest APIs: \n
-**POST - /api/v1.0/customer/register** - Register a new user \n
-**POST - /api/v1.0/policy/register** -Register a new plocy \n
-**GET - /api/v1.0/policy/getall** -Fetches all the policy Details \n
-**GET - /api/v1.0/policy/ searches** -Fetches policy Detail based on Policy Type, Number years, Company of Name, Policy Id, Policy Name \n
-[POST /searches # create a new search \n
+Rest APIs: \
+**POST - /api/v1.0/customer/register** - Register a new user \
+**POST - /api/v1.0/policy/register** -Register a new plocy \
+**GET - /api/v1.0/policy/getall** -Fetches all the policy Details \
+**GET - /api/v1.0/policy/ searches** -Fetches policy Detail based on Policy Type, Number years, Company of Name, Policy Id, Policy Name \
+[POST /searches # create a new search \
 GET /searches # list all searches]
