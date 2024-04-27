@@ -1,5 +1,7 @@
 package com.system.user.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,50 +9,50 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
 @Table(name = "users")
 public class User {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+	@Column(nullable = true)
     private String firstName;
 
-    @Column(nullable = false)
     private String lastName;
-
-    @Column(nullable = false)
-    private String dob;
-
-    @Column(nullable = false)
+    private LocalDate dob;
     private String email;
-
-    @Column
     private String address;
-
-    @Column
     private String contactNumber;
-
-    @Column
-    private String salary;
-
-    @Column
+    private int salary;
     private String pan;
-
-    @Column
     private String employerName;
-
-    @Column
     private String employerType;
-
-    @Column(nullable = false)
     private String password;
+    
+	public User() {
+		super();
+	}
+
+	public User(Long id, String firstName, String lastName, LocalDate dob, String email,
+            String address, String contactNumber, int salary, String pan,
+            String employerName, String employerType, String password) {
+    super();
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.dob = dob;
+    this.email = email;
+    this.address = address;
+    this.contactNumber = contactNumber;
+    this.salary = salary;
+    this.pan = pan;
+    this.employerName = employerName;
+    this.employerType = employerType;
+    this.password = password;
+}
+
 
 	public Long getId() {
 		return id;
@@ -76,11 +78,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getDob() {
+	public LocalDate getDob() {
 		return dob;
 	}
 
-	public void setDob(String dob) {
+	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
 
@@ -108,11 +110,11 @@ public class User {
 		this.contactNumber = contactNumber;
 	}
 
-	public String getSalary() {
+	public int getSalary() {
 		return salary;
 	}
 
-	public void setSalary(String salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 
@@ -148,28 +150,6 @@ public class User {
 		this.password = password;
 	}
 
-	public User(Long id, String firstName, String lastName, String dob, String email, String address,
-			String contactNumber, String salary, String pan, String employerName, String employerType,
-			String password) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.dob = dob;
-		this.email = email;
-		this.address = address;
-		this.contactNumber = contactNumber;
-		this.salary = salary;
-		this.pan = pan;
-		this.employerName = employerName;
-		this.employerType = employerType;
-		this.password = password;
-	}
-
-	public User() {
-		super();
-	}
-
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", dob=" + dob + ", email="
@@ -177,5 +157,4 @@ public class User {
 				+ pan + ", employerName=" + employerName + ", employerType=" + employerType + ", password=" + password
 				+ "]";
 	}
-
 }

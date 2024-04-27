@@ -1,7 +1,6 @@
 package com.system.policy.service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +8,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.system.policy.dto.PolicyDto;
 import com.system.policy.entity.Policy;
 import com.system.policy.repository.PolicyRepository;
 
@@ -18,44 +18,63 @@ public class PolicyService {
 	@Autowired
 	private PolicyRepository policyRepository;
 	
-	public Policy registerPolicy(Policy policy) {
-        String policyId = generatePolicyId(policy.getPolicyType(), getYear(policy.getStartDate()), policy.getPolicyName());
-        policy.setPolicyId(policyId);
+	public Policy registerPolicy(PolicyDto policyDto) {
+        // Set policy ID based on type and year
+		Policy policy = new Policy();
+        String policyId = generatePolicyId(policyDto.getPolicyType(), policyDto.getStartDate().getYear());
+        policyDto.setPolicyId(policyId);
 
-        double maturityAmount = calculateMaturityAmount(policy.getInitialDeposit(), policy.getDuration(),
-                policy.getTermsPerYear(), policy.getTermAmount(), policy.getInterest());
-        policy.setMaturityAmount(maturityAmount);
+        // Calculate maturity amount
+        double maturityAmount = calculateMaturityAmount(policyDto.getInitialDeposit(), policyDto.getDurationInYears(),
+                policyDto.getTermsPerYear(), policyDto.getTermAmount(), policyDto.getInterest());
+        policyDto.setMaturityAmount(maturityAmount);
+        
+        // Calculate end date based on duration in years
+        LocalDate endDate = getEndDate(policyDto);
+        policyDto.setEndDate(endDate);
+        
+        
+        policy.setPolicyName(policyDto.getPolicyName());
+        policy.setStartDate(policyDto.getStartDate());
+        policy.setDurationInYears(policyDto.getDurationInYears());
+        policy.setCompany(policyDto.getCompany());
+        policy.setInitialDeposit(policyDto.getInitialDeposit());
+        policy.setPolicyType(policyDto.getPolicyType());
+        policy.setUserTypes(policyDto.getUserTypes());
+        policy.setTermsPerYear(policyDto.getTermsPerYear());
+        policy.setTermAmount(policyDto.getTermAmount());
+        policy.setInterest(policyDto.getInterest());
+        policy.setEndDate(policyDto.getEndDate());
+        policy.setMaturityAmount(policyDto.getMaturityAmount());
+        policy.setPolicyId(policyDto.getPolicyId());
 
+        // Save policy to database
         return policyRepository.save(policy);
     }
-	
-	public List<Policy> searchPolicies(Integer numberOfYears, String companyName, String policyType, String policyId, String policyName) {
-        return policyRepository.searchPolicies(numberOfYears, companyName, policyType, policyId, policyName);
-    }
 
-    private String getYear(String startDate) {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(startDate, formatter);
-		return String.valueOf(date.getYear());
+	public List<Policy> searchPolicies(Integer numberOfYears, String companyName, String policyType, String policyId,
+			String policyName) {
+		return policyRepository.searchPolicies(numberOfYears, companyName, policyType, policyId, policyName);
 	}
 
-    public String generatePolicyId(String policyType, String year, String policyName) {
-        String lastPolicyId = policyRepository.findLastPolicyIdByPolicyType(policyType);
-        
-        if (lastPolicyId == null || lastPolicyId.isEmpty()) {
-        	StringBuilder abbreviation = new StringBuilder();
-        	String[] words = policyName.split(" ");
-            for (String word : words) {
-                abbreviation.append(word.charAt(0));
-            }
-            return abbreviation.toString().toUpperCase() + "-" + year + "-001";
+	private LocalDate getEndDate(PolicyDto policy)
+	{
+        LocalDate date = policy.getStartDate();
+        return date.plusYears(policy.getDurationInYears());
+	}
+
+    public String generatePolicyId(String policyType, int year) {
+    	Policy policy = policyRepository.findFirstByPolicyTypeIgnoreCaseOrderByPolicyIdDesc(policyType);
+        if (policy == null) {
+        	String policyPrefix = getPolicyNamePrefix(policyType);
+            return policyPrefix + "-" + year + "-001";
         }
         
-        String yearString = year;
+        int yearString = year;
         int lastNumericPart = 0;
         String numericPart = "";
         Pattern pattern = Pattern.compile(yearString + "-(\\d{3})");
-        Matcher matcher = pattern.matcher(lastPolicyId);
+        Matcher matcher = pattern.matcher(policy.getPolicyId());
         if (matcher.find()) {
             lastNumericPart = Integer.parseInt(matcher.group(1));
         }
@@ -69,7 +88,7 @@ public class PolicyService {
             numericPart = String.valueOf(nextNumericPart);
         }
 
-        String prefix = getPolicyNamePrefix(policyName);
+        String prefix = getPolicyNamePrefix(policyType);
         return prefix + "-" + yearString + "-" + numericPart;
     }
     
@@ -90,10 +109,11 @@ public class PolicyService {
         }
     }
 
-    private double calculateMaturityAmount(double initialDeposit, int durationYears, int termsPerYear,
+    private double calculateMaturityAmount(double initialDeposit, int durationInYears, int termsPerYear,
                                            double termAmount, double interest) {
-        return initialDeposit + (durationYears * termsPerYear * termAmount)
-                + ((durationYears * termsPerYear * termAmount) * (interest / 100));
+        // Calculate maturity amount based on provided formula
+        return initialDeposit + (durationInYears * termsPerYear * termAmount)
+                + ((durationInYears * termsPerYear * termAmount) * (interest / 100));
     }
 
 	public List<Policy> getAllPolicies() {

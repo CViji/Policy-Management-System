@@ -1,6 +1,7 @@
 package com.system.policy.entity;
 
-import javax.persistence.Column;
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,46 +11,48 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "policies")
 public class Policy {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String policyName;
+	private String policyId;
+	private String policyType;
+	private LocalDate startDate;
+	private int durationInYears;
+	private String company;
+	private double initialDeposit;
+	private String userTypes;
+	private int termsPerYear;
+	private double termAmount;
+	private double interest;
+	private LocalDate endDate;
+	private double maturityAmount;
+	
+	public Policy() {
+		super();
+	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public Policy(Long id, String policyName, String policyId, String policyType, LocalDate startDate, int durationInYears,
+			String company, double initialDeposit, String userTypes, int termsPerYear, double termAmount,
+			double interest, LocalDate endDate, double maturityAmount) {
+		super();
+		this.id = id;
+		this.policyName = policyName;
+		this.policyId = policyId;
+		this.policyType = policyType;
+		this.startDate = startDate;
+		this.durationInYears = durationInYears;
+		this.company = company;
+		this.initialDeposit = initialDeposit;
+		this.userTypes = userTypes;
+		this.termsPerYear = termsPerYear;
+		this.termAmount = termAmount;
+		this.interest = interest;
+		this.endDate = endDate;
+		this.maturityAmount = maturityAmount;
+	}
 
-    @Column(nullable = false)
-    private String policyName;
-
-    @Column(nullable = false)
-    private String startDate;
-
-    @Column(nullable = false)
-    private int duration;
-
-    @Column(nullable = false)
-    private String company;
-
-    @Column(nullable = false)
-    private double initialDeposit;
-
-    @Column(nullable = false)
-    private String policyType;
-
-    @Column(nullable = false)
-    private String userTypes;
-
-    @Column(nullable = false)
-    private int termsPerYear;
-
-    @Column(nullable = false)
-    private double termAmount;
-
-    @Column(nullable = false)
-    private double interest;
-
-    @Column(nullable = false)
-    private double maturityAmount;
-
-    @Column(nullable = false)
-    private String policyId;
 
 	public Long getId() {
 		return id;
@@ -67,20 +70,36 @@ public class Policy {
 		this.policyName = policyName;
 	}
 
-	public String getStartDate() {
+	public String getPolicyId() {
+		return policyId;
+	}
+
+	public void setPolicyId(String policyId) {
+		this.policyId = policyId;
+	}
+
+	public String getPolicyType() {
+		return policyType;
+	}
+
+	public void setPolicyType(String policyType) {
+		this.policyType = policyType;
+	}
+
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public int getDuration() {
-		return duration;
+	public int getDurationInYears() {
+		return durationInYears;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setDurationInYears(int durationInYears) {
+		this.durationInYears = durationInYears;
 	}
 
 	public String getCompany() {
@@ -97,14 +116,6 @@ public class Policy {
 
 	public void setInitialDeposit(double initialDeposit) {
 		this.initialDeposit = initialDeposit;
-	}
-
-	public String getPolicyType() {
-		return policyType;
-	}
-
-	public void setPolicyType(String policyType) {
-		this.policyType = policyType;
 	}
 
 	public String getUserTypes() {
@@ -139,6 +150,14 @@ public class Policy {
 		this.interest = interest;
 	}
 
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
 	public double getMaturityAmount() {
 		return maturityAmount;
 	}
@@ -147,43 +166,15 @@ public class Policy {
 		this.maturityAmount = maturityAmount;
 	}
 
-	public String getPolicyId() {
-		return policyId;
-	}
-
-	public void setPolicyId(String policyId) {
-		this.policyId = policyId;
-	}
-
-	public Policy(Long id, String policyName, String startDate, int duration, String company, double initialDeposit,
-			String policyType, String userTypes, int termsPerYear, double termAmount, double interest,
-			double maturityAmount, String policyId) {
-		super();
-		this.id = id;
-		this.policyName = policyName;
-		this.startDate = startDate;
-		this.duration = duration;
-		this.company = company;
-		this.initialDeposit = initialDeposit;
-		this.policyType = policyType;
-		this.userTypes = userTypes;
-		this.termsPerYear = termsPerYear;
-		this.termAmount = termAmount;
-		this.interest = interest;
-		this.maturityAmount = maturityAmount;
-		this.policyId = policyId;
-	}
-
-	public Policy() {
-		super();
-	}
-
 	@Override
 	public String toString() {
-		return "Policy [id=" + id + ", policyName=" + policyName + ", startDate=" + startDate + ", duration=" + duration
-				+ ", company=" + company + ", initialDeposit=" + initialDeposit + ", policyType=" + policyType
-				+ ", userTypes=" + userTypes + ", termsPerYear=" + termsPerYear + ", termAmount=" + termAmount
-				+ ", interest=" + interest + ", maturityAmount=" + maturityAmount + ", policyId=" + policyId + "]";
+		return "Policy [id=" + id + ", policyName=" + policyName + ", policyId=" + policyId + ", policyType="
+				+ policyType + ", startDate=" + startDate + ", durationInYears=" + durationInYears + ", company="
+				+ company + ", initialDeposit=" + initialDeposit + ", userTypes=" + userTypes + ", termsPerYear="
+				+ termsPerYear + ", termAmount=" + termAmount + ", interest=" + interest + ", endDate=" + endDate
+				+ ", maturityAmount=" + maturityAmount + "]";
 	}
+
+	
 
 }
