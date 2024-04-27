@@ -33,8 +33,6 @@ public class PolicySearchService {
         );
         List<Policy> policies = responseEntity.getBody();
         return policies;
-//		List<Policy> policy = restTemplate.getForObject("", Policy.class);
-//		return policySearchRepository.searchPolicies(numberOfYears, companyName, policyType, policyId, policyName);
         
 	}
 }

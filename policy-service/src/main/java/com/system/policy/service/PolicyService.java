@@ -19,16 +19,13 @@ public class PolicyService {
 	private PolicyRepository policyRepository;
 	
 	public Policy registerPolicy(Policy policy) {
-        // Set policy ID based on type and year
         String policyId = generatePolicyId(policy.getPolicyType(), getYear(policy.getStartDate()), policy.getPolicyName());
         policy.setPolicyId(policyId);
 
-        // Calculate maturity amount
         double maturityAmount = calculateMaturityAmount(policy.getInitialDeposit(), policy.getDuration(),
                 policy.getTermsPerYear(), policy.getTermAmount(), policy.getInterest());
         policy.setMaturityAmount(maturityAmount);
 
-        // Save policy to database
         return policyRepository.save(policy);
     }
 	
@@ -43,11 +40,9 @@ public class PolicyService {
 	}
 
     public String generatePolicyId(String policyType, String year, String policyName) {
-        // Fetch the last generated policy ID for the specified policy type
         String lastPolicyId = policyRepository.findLastPolicyIdByPolicyType(policyType);
         
         if (lastPolicyId == null || lastPolicyId.isEmpty()) {
-            // No existing policy found, generate the first policy ID for the year
         	StringBuilder abbreviation = new StringBuilder();
         	String[] words = policyName.split(" ");
             for (String word : words) {
@@ -56,7 +51,6 @@ public class PolicyService {
             return abbreviation.toString().toUpperCase() + "-" + year + "-001";
         }
         
-        // Extract the year and the numeric part from the last policy ID
         String yearString = year;
         int lastNumericPart = 0;
         String numericPart = "";
@@ -66,7 +60,6 @@ public class PolicyService {
             lastNumericPart = Integer.parseInt(matcher.group(1));
         }
         
-        // Increment the numeric part and format it
         int nextNumericPart = lastNumericPart + 1;
         if (nextNumericPart < 10) {
             numericPart = "00" + nextNumericPart;
@@ -76,7 +69,6 @@ public class PolicyService {
             numericPart = String.valueOf(nextNumericPart);
         }
 
-        // Generate the next policy ID based on policy type prefix
         String prefix = getPolicyNamePrefix(policyName);
         return prefix + "-" + yearString + "-" + numericPart;
     }
@@ -94,14 +86,12 @@ public class PolicyService {
             case "Retirement Plans":
                 return "RP";
             default:
-                // For any other policy type, you can define a default prefix or handle it accordingly
                 return "OTHER";
         }
     }
 
     private double calculateMaturityAmount(double initialDeposit, int durationYears, int termsPerYear,
                                            double termAmount, double interest) {
-        // Calculate maturity amount based on provided formula
         return initialDeposit + (durationYears * termsPerYear * termAmount)
                 + ((durationYears * termsPerYear * termAmount) * (interest / 100));
     }

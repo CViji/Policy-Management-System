@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 public class User {
 
     @Id
@@ -31,7 +28,6 @@ public class User {
     @Column(nullable = false)
     private String dob;
 
-//    @Email(message = "Invalid email format")
     @Column(nullable = false)
     private String email;
 
