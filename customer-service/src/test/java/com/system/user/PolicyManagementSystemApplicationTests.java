@@ -1,4 +1,4 @@
-package com.policy.system;
+package com.system.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
