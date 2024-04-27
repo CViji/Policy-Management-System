@@ -28,16 +28,16 @@ public class PolicyController {
 	private PolicyService policyService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> registerPolicy(@Valid @RequestBody PolicyDto policy, BindingResult result)
+	public ResponseEntity<?> registerPolicy(@Valid @RequestBody PolicyDto policy)
 	{
-		if(result.hasErrors())
-		{
-			Map<String, String> errorMap = new HashMap<>();
-			result.getFieldErrors().forEach(error -> {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			});
-			return ResponseEntity.badRequest().body("Invalid request:\n" + errorMap);
-		}
+//		if(result.hasErrors())
+//		{
+//			Map<String, String> errorMap = new HashMap<>();
+//			result.getFieldErrors().forEach(error -> {
+//				errorMap.put(error.getField(), error.getDefaultMessage());
+//			});
+//			return ResponseEntity.badRequest().body("Invalid request:\n" + errorMap);
+//		}
 		
 		Policy newPolicy = policyService.registerPolicy(policy);
 //		return new ResponseEntity<>(newPolicy, HttpStatus.CREATED);

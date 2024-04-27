@@ -28,16 +28,7 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
-
-		if(result.hasErrors())
-	    {
-			Map<String, String> errorMap = new HashMap<>();
-	        result.getFieldErrors().forEach(error -> {
-	        	errorMap.put(error.getField(), error.getDefaultMessage());
-	        });
-	    	return ResponseEntity.badRequest().body("Invalid request:\n" + errorMap);
-	    }
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto) {
 		if (userService.isUserExists(userDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already registered");
         }
