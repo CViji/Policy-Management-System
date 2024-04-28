@@ -13,17 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class UserRepositoryTest {
 
     @MockBean
     private UserRepository userRepository;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void testExistsByEmail() {
