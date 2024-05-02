@@ -90,6 +90,55 @@ public class PolicyServiceTest {
         when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
         Policy createdPolicy2 = policyService.registerPolicy(policyDto);
         assertEquals(savedPolicy.getPolicyId(), createdPolicy2.getPolicyId());
+        
+        //Test case For Retirement Plans
+        policyDto.setPolicyType("Retirement Plans");
+        savedPolicy.setPolicyType(policyDto.getPolicyType());
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        savedPolicy.setPolicyId("RP-2024-001");
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        Policy createdPolicy3 = policyService.registerPolicy(policyDto);
+        assertEquals(savedPolicy.getPolicyId(), createdPolicy3.getPolicyId());
+        
+        //Test case For Child Plans
+        policyDto.setPolicyType("Child Plans");
+        savedPolicy.setPolicyType(policyDto.getPolicyType());
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        savedPolicy.setPolicyId("CP-2024-001");
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        Policy createdPolicy4 = policyService.registerPolicy(policyDto);
+        assertEquals(savedPolicy.getPolicyId(), createdPolicy4.getPolicyId());
+        
+        //Test case For Health Insurance
+        policyDto.setPolicyType("Health Insurance");
+        savedPolicy.setPolicyType(policyDto.getPolicyType());
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        savedPolicy.setPolicyId("HI-2024-001");
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        Policy createdPolicy5 = policyService.registerPolicy(policyDto);
+        assertEquals(savedPolicy.getPolicyId(), createdPolicy5.getPolicyId());
+        
+        //Test case For Travel Insurance
+        policyDto.setPolicyType("Travel Insurance");
+        savedPolicy.setPolicyType(policyDto.getPolicyType());
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        policyInDatabase.setPolicyId("TI-2024-011");
+        when(policyRepository.findFirstByPolicyTypeIgnoreCaseOrderByPolicyIdDesc(policyDto.getPolicyType())).thenReturn(policyInDatabase);
+        savedPolicy.setPolicyId("TI-2024-012");
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        Policy createdPolicy6 = policyService.registerPolicy(policyDto);
+        assertEquals(savedPolicy.getPolicyId(), createdPolicy6.getPolicyId());
+        
+        //Test case For Vehicle Insurance
+        policyDto.setPolicyType("Vehicle Insurance");
+        savedPolicy.setPolicyType(policyDto.getPolicyType());
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        policyInDatabase.setPolicyId("VI-2024-101");
+        when(policyRepository.findFirstByPolicyTypeIgnoreCaseOrderByPolicyIdDesc(policyDto.getPolicyType())).thenReturn(policyInDatabase);
+        savedPolicy.setPolicyId("VI-2024-102");
+        when(policyRepository.save(any(Policy.class))).thenReturn(savedPolicy);
+        Policy createdPolicy7 = policyService.registerPolicy(policyDto);
+        assertEquals(savedPolicy.getPolicyId(), createdPolicy7.getPolicyId());
 	}
 	
 	@Test
